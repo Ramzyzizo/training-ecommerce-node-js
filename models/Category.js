@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema({
   },
   image:String
 },{timestamps:true});
-const CategoryModel = mongoose.model("Catgeory", categorySchema);
+const Category = mongoose.model("Catgeory", categorySchema);
 
 
-module.exports = CategoryModel
+module.exports = Category;
