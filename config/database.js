@@ -6,10 +6,6 @@ const dbConnection = () => {
     .then((con) => {
       console.log(`connected successfully. ${con.connection.host}`);
     })
-    .catch((error) => {
-      console.error(`connected Error. ${error}`);
-      process.exit(1);
-    });
 };
 
 module.exports = dbConnection;
