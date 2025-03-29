@@ -5,8 +5,8 @@ const categorySchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      require: [true, "Name is required."],
-      unique: [true, "Name must be unique."],
+      required: [true, "Name is required."],
+      unique: true,
       minLength: [3, "Name is too short"],
       maxLength: [30, "Name is too long"],
     },
@@ -18,7 +18,7 @@ const categorySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const Category = mongoose.model("Catgeory", categorySchema);
+const Category = mongoose.model("Category", categorySchema);
 
 
 module.exports = Category;

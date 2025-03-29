@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
+const Category = require("./Category");
 
 const subCategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
-      unique: [true, "Name must be unique."],
-      require: [true, "Name is required."],
+      unique: true,
+      required: [true, "Name is required."],
       minLength: [3, "Name is too short"],
       maxLength: [30, "Name is too long"],
     },
@@ -17,11 +18,11 @@ const subCategorySchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.ObjectId,
       ref: "Category",
-      require: [true, "Parent Category is required."],
+      required: [true, "Parent Category is required."],
     },
   },
   { timestamps: true }
 );
-const SubCatgeory = mongoose.model("SubCatgeory", subCategorySchema);
+const SubCategory = mongoose.model("SubCategory", subCategorySchema);
 
-module.exports = SubCatgeory;
+module.exports = SubCategory;

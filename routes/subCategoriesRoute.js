@@ -14,8 +14,8 @@ const {
 
 
 
-
-const router = express.Router();
+// mergeParams allow to access params from another routes 
+const router = express.Router({mergeParams: true});
 
 router
   .route("/")
