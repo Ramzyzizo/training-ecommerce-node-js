@@ -1,10 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const morgan = require("morgan");
 
 dotenv.config({ path: "config.env" });
 const dbCOnnection = require("./config/database");
 const catgeoryRoute = require("./routes/categoriesRoute");
+const subCatgeoryRoute = require("./routes/subCategoriesRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
 
@@ -14,6 +14,7 @@ app.use(express.json());
 
 // Mount routes
 app.use("/api/v1/categories", catgeoryRoute);
+app.use("/api/v1/subCategories", subCatgeoryRoute);
 
 // handle routes not found
 app.use("*", (req, res, next) => {
@@ -23,7 +24,7 @@ app.use("*", (req, res, next) => {
 // handle global erros of express as json
 app.use(globalError);
 
-const PORT = process.env.PORT;
+const {PORT} = process.env;
 const server = app.listen(PORT, () => {
   console.log(`App is running envvv.${PORT} `);
 });

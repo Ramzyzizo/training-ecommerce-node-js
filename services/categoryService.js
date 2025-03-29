@@ -1,6 +1,6 @@
-const Category = require("../models/Category");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
+const Category = require("../models/Category");
 const ApiError = require("../utiles/ApiError");
 
 // api/v1/categories/id

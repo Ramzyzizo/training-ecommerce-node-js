@@ -1,6 +1,4 @@
 const express = require("express");
-const { param, validationResult } = require("express-validator");
-
 const {
   getCategory,
   getCategories,
