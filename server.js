@@ -6,6 +6,7 @@ const dbCOnnection = require("./config/database");
 const catgeoryRoute = require("./routes/categoriesRoute");
 const subCatgeoryRoute = require("./routes/subCategoriesRoute");
 const brandRoute = require("./routes/brandsRoute");
+const ProductRoute = require("./routes/productsRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/v1/categories", catgeoryRoute);
 app.use("/api/v1/subCategories", subCatgeoryRoute);
 app.use("/api/v1/brands", brandRoute);
+app.use("/api/v1/products", ProductRoute);
 
 // handle routes not found
 app.use("*", (req, res, next) => {

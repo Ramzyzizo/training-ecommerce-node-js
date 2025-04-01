@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema(
     coloers: {
       type: [String],
     },
-    miageCover: {
+    imageCover: {
       type: String,
       required: true,
     },
@@ -49,20 +49,20 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    subcategory: {
-      type: mongoose.Schema.ObjectId,
+    subcategories: {
+      type: [mongoose.Schema.ObjectId],
       ref: "SubCategory",
     },
-    brand:{
+    brand: {
       type: mongoose.Schema.ObjectId,
       ref: "Brand",
     },
-    ratingAverage:{
+    ratingAverage: {
       type: Number,
       min: [1, "Rating must be above or equal 1"],
       max: [5, "Rating must be below or equal 5"],
     },
-    ratingQuantity:{
+    ratingQuantity: {
       type: Number,
       default: 0,
     },
