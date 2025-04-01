@@ -5,6 +5,7 @@ dotenv.config({ path: "config.env" });
 const dbCOnnection = require("./config/database");
 const catgeoryRoute = require("./routes/categoriesRoute");
 const subCatgeoryRoute = require("./routes/subCategoriesRoute");
+const brandRoute = require("./routes/brandsRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Mount routes
 app.use("/api/v1/categories", catgeoryRoute);
 app.use("/api/v1/subCategories", subCatgeoryRoute);
+app.use("/api/v1/brands", brandRoute);
 
 // handle routes not found
 app.use("*", (req, res, next) => {
