@@ -1,4 +1,5 @@
-const { check } = require("express-validator");
+const { check, body } = require("express-validator");
+const { default: slugify } = require("slugify");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const SubCategory = require("../../models/SubCategory");
 const Category = require("../../models/Category");
@@ -64,6 +65,12 @@ exports.updateSubCategoryValidator = [
       }
       return true;
     }),
+  body("title").custom((value, { req }) => {
+    if (value) {
+      req.body.slug = slugify(value);
+    }
+    return value;
+  }),
   validatorMiddleware,
 ];
 exports.deleteSubCategoryValidator = [

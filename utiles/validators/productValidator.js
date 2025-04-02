@@ -1,4 +1,5 @@
-const { check } = require("express-validator");
+const { check, body } = require("express-validator");
+const slugify = require("slugify");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const Product = require("../../models/Product");
 const Category = require("../../models/Category");
@@ -85,7 +86,9 @@ exports.createProductValidator = [
         category: req.body.category,
       }).then((subcategories) => {
         if (subcategories.length !== subcategorieIds.length) {
-          throw new Error("One or more subcategories do not exist, or not belong to the Parent Category.");
+          throw new Error(
+            "One or more subcategories do not exist, or not belong to the Parent Category."
+          );
         }
       })
     )
@@ -95,6 +98,12 @@ exports.createProductValidator = [
 ];
 exports.updateProductValidator = [
   check("id").isMongoId().bail().withMessage("Invalied ID"),
+  body("title").custom((value, { req }) => {
+    if (value) {
+      req.body.slug = slugify(value);
+    }
+    return value;
+  }),
   validatorMiddleware,
 ];
 exports.deleteProductValidator = [

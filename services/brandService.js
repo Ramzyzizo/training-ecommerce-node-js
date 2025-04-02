@@ -3,7 +3,7 @@ const slugify = require("slugify");
 const ApiError = require("../utiles/ApiError");
 const Brand = require("../models/Brand");
 const ApiFeatures = require("../utiles/apiFeatures");
-const { deleteOne } = require("./handlersFactory");
+const { deleteOne, updateOne } = require("./handlersFactory");
 
 // api/v1/brands/id
 exports.getBradns = asyncHandler(async (req, res) => {
@@ -40,18 +40,6 @@ exports.createBrand = asyncHandler(async (req, res) => {
   res.status(201).json({ data: brand });
 });
 
-exports.updateBrand = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  const brand = await Brand.findOneAndUpdate(
-    { _id: id },
-    { name, slug: slugify(name) },
-    { new: true }
-  );
-  if (!brand) {
-    return next(new ApiError(`Brand not found for ${id}`, 404));
-  }
-  res.status(200).json({ data: brand });
-});
+exports.updateBrand = updateOne(Brand);
 
 exports.deleteBrand = deleteOne(Brand);

@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const SubCategory = require("../models/SubCategory");
 const ApiFeatures = require("../utiles/apiFeatures");
-const { deleteOne } = require("./handlersFactory");
+const { deleteOne, updateOne } = require("./handlersFactory");
 
 
 exports.filterObject = (req, res, next) => {
@@ -37,11 +37,6 @@ exports.getSubCategories = asyncHandler(async (req, res) => {
 exports.getSubCategory = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const existSubCategory = await SubCategory.findById(id)
-  // to show the category name and slug only 
-  // .populate({
-  //   path: "category",
-  //   select: "name -_id slug",
-  // });
   res.status(200).json({ data: existSubCategory });
 });
 
@@ -64,16 +59,7 @@ exports.createSubCategory = asyncHandler(async (req, res) => {
 });
 
 // api/v1/subCategories/:id
-exports.updateSubCategory = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const { name, category } = req.body;
-  const subCategory = await SubCategory.findOneAndUpdate(
-    { _id: id },
-    { name, slug: slugify(name), category },
-    { new: true }
-  );
-  res.status(200).json({ data: subCategory });
-});
+exports.updateSubCategory = updateOne(SubCategory);
 
 // api/v1/subCategories/:id
 exports.deleteSubCategory = deleteOne(SubCategory);

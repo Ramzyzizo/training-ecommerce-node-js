@@ -10,3 +10,15 @@ exports.deleteOne= (Model) =>
     }
     res.status(204).json({ status: "Deleted successfully", data: doc });
   });
+
+exports.updateOne = (Model) =>
+    asyncHandler(async (req, res, next) => {
+      const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      if (!doc) {
+        return next(new ApiError(`Document not found for ${req.params.id}`, 404));
+      }
+      res.status(200).json({ status: "Updated successfully", data: doc });
+    })
