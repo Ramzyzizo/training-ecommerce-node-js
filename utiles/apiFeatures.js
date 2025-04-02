@@ -35,23 +35,38 @@ class ApiFeatures{
         return this;
     }
 
-    search(){
+    search(modelName){
         if(this.queryString.keyword){
             const {keyword} = this.queryString;
-            this.query = this.query.find({
-                $or: [
-                    { title: { $regex: keyword, $options: "i" } },
-                    { description: { $regex: keyword, $options: "i" } }
-                ]
-            });
+            if(modelName === "Product"){
+                this.query = this.query.find({
+                    $or: [
+                        { title: { $regex: keyword, $options: "i" } },
+                        { description: { $regex: keyword, $options: "i" } }
+                    ]
+                });
+            }else{
+                this.query = this.query.find({
+                    name: { $regex: keyword, $options: "i" }
+                });
+            }
         }
         return this;
     }
 
-    paginate(){
+    paginate(countDocuments){
         const page = Number(this.queryString.page) || 1;
         const limit = Number(this.queryString.limit) || 2;
         const skip = (page - 1) * limit;
+
+        this.paginationResult = {
+          totalDocuments: countDocuments,
+          currentPage: page,
+          limit: limit,
+          numberOfPages: Math.ceil(countDocuments / limit),
+          next: page < Math.ceil(countDocuments / limit) ? page + 1 : null,
+          prev: page > 1 ? page - 1 : null,
+        };
         this.query = this.query.skip(skip).limit(limit);
         return this;
     }

@@ -6,20 +6,25 @@ const Product = require("../models/Product");
 
 // api/v1/products/id
 exports.getProducts = asyncHandler(async (req, res) => {
-  // querying
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
     .filter()
     .sort()
     .limitFields()
-    .search()
-    .paginate();
+    .search("Product");
+  const countDocuments = await apiFeatures.query.clone().countDocuments();
+  apiFeatures.paginate(countDocuments);
   apiFeatures.query = apiFeatures.query.populate({
     path: "category",
     select: "name -_id slug",
   });
 
-  const products = await apiFeatures.query;
-  res.status(200).json({ results: products.length, data: products });
+  const { query, paginationResult } = apiFeatures;
+  const products = await query;
+
+  res.status(200).json({
+    paginationResult,
+    data: products,
+  });
 });
 // api/v1/products
 exports.getProduct = asyncHandler(async (req, res, next) => {
