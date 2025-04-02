@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "config.env" });
-const dbCOnnection = require("./config/database");
+const dbConnection = require("./config/database");
 const catgeoryRoute = require("./routes/categoriesRoute");
 const subCatgeoryRoute = require("./routes/subCategoriesRoute");
 const brandRoute = require("./routes/brandsRoute");
@@ -10,7 +10,7 @@ const ProductRoute = require("./routes/productsRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
 
-dbCOnnection();
+dbConnection();
 const app = express();
 app.use(express.json());
 
