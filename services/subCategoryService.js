@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const SubCategory = require("../models/SubCategory");
 const ApiFeatures = require("../utiles/apiFeatures");
+const { deleteOne } = require("./handlersFactory");
 
 
 exports.filterObject = (req, res, next) => {
@@ -75,8 +76,4 @@ exports.updateSubCategory = asyncHandler(async (req, res, next) => {
 });
 
 // api/v1/subCategories/:id
-exports.deleteSubCategory = asyncHandler(async(req,res)=>{
-  const { id } = req.params;
-  const subCategory = await SubCategory.findByIdAndDelete(id);
-  res.status(204).json({ data: subCategory,msg:"Deleted successfully" });
-})
+exports.deleteSubCategory = deleteOne(SubCategory);

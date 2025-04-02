@@ -3,6 +3,7 @@ const slugify = require("slugify");
 const ApiError = require("../utiles/ApiError");
 const Brand = require("../models/Brand");
 const ApiFeatures = require("../utiles/apiFeatures");
+const { deleteOne } = require("./handlersFactory");
 
 // api/v1/brands/id
 exports.getBradns = asyncHandler(async (req, res) => {
@@ -53,12 +54,4 @@ exports.updateBrand = asyncHandler(async (req, res, next) => {
   res.status(200).json({ data: brand });
 });
 
-exports.deleteBrand = asyncHandler(async(req,res)=>{
-  const { id } = req.params;
-  const brand = await Brand.findByIdAndDelete(id);
-  console.log(brand);
-  if (!brand) {
-    return res.status(404).json({ msg: `Category not found for ${id}` });
-  }
-  res.status(204).send();  
-})
+exports.deleteBrand = deleteOne(Brand);

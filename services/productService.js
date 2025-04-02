@@ -3,6 +3,7 @@ const slugify = require("slugify");
 const ApiError = require("../utiles/ApiError");
 const ApiFeatures = require("../utiles/apiFeatures");
 const Product = require("../models/Product");
+const { deleteOne } = require("./handlersFactory");
 
 // api/v1/products/id
 exports.getProducts = asyncHandler(async (req, res) => {
@@ -60,12 +61,5 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
   res.status(200).json({ data: product });
 });
 
-exports.deleteProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findByIdAndDelete(id);
-  console.log(product);
-  if (!product) {
-    return res.status(404).json({ msg: `Product not found for ${id}` });
-  }
-  res.status(204).send();
-});
+
+exports.deleteProduct = deleteOne(Product);
