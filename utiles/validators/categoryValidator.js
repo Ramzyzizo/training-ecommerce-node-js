@@ -22,7 +22,13 @@ exports.createCategoryValidator = [
         throw new Error("Name is already stored before.");
       }
       return true;
-    }),
+    })
+    .custom((value, { req }) => {
+    if (value) {
+      req.body.slug = slugify(value);
+    }
+    return value;
+  }),
   validatorMiddleware,
 ];
 

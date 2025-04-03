@@ -27,7 +27,13 @@ exports.createProductValidator = [
         throw new Error("Title is already stored before.");
       }
       return true;
-    }),
+    })
+    .custom((value, { req }) => {
+        if (value) {
+          req.body.slug = slugify(value);
+        }
+        return value;
+      }),
   check("description")
     .notEmpty()
     .withMessage("description is required.")
@@ -92,7 +98,6 @@ exports.createProductValidator = [
         }
       })
     )
-
     .bail(),
   validatorMiddleware,
 ];
