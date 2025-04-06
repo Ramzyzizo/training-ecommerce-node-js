@@ -17,11 +17,12 @@ dbConnection();
 const app = express();
 // handle json body
 app.use(express.json());
+
+
 // Multer setup — use memory storage (or configure disk if needed)
+// Use multer globally for all multipart/form-data requests
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
-// Use multer globally for all multipart/form-data requests
 app.use(upload.any());
 
 app.use(express.urlencoded({ extended: true }));
