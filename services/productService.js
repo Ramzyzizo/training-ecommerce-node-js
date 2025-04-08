@@ -5,15 +5,6 @@ const { deleteOne, updateOne, createOne, getOne, getAll } = require("./handlersF
 exports.getProducts = getAll(Product);
 // api/v1/products
 exports.getProduct = getOne(Product);
-// exports.getProduct = getOne(Product, {
-//   path: "category",
-//   select: "name -_id slug",
-// });
-//orrrrrrrrrrrrrrrrrr
-// mongose middleware in Product Schema
-
-
-
 // api/v1/products/id
 exports.createProduct = createOne(Product);
 

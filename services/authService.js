@@ -50,8 +50,7 @@ exports.Login = asyncHandler(async (req, res, next) => {
 });
 
 exports.Logout = asyncHandler(async (req, res) => {
-  res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10 * 1000),
+  res.cookie("jwt", "", {maxAge: 1,
     httpOnly: true,
   });
   res.status(200).json({

@@ -59,9 +59,11 @@ exports.getAll = (Model, populateOptions) =>
        query = query.populate(populateOptions);
      }
     const doc = await query;
-
+    const {user} = req;
+    
     res.status(200).json({
       paginationResult,
       data: doc,
+      user,
     });
   });

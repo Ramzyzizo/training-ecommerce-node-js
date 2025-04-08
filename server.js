@@ -12,6 +12,7 @@ const UserRoute = require("./routes/userRoute");
 const AuthRoute = require("./routes/authRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
+const {requireAuth} = require("./middlewares/authMiddleware");
 
 dbConnection();
 const app = express();
@@ -29,12 +30,13 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Mount routes
-app.use("/api/v1/categories", catgeoryRoute);
+app.use("/api/v1/", AuthRoute);
+app.use("/api/v1/*", requireAuth);
+app.use("/api/v1/categories", catgeoryRoute); 
 app.use("/api/v1/subCategories", subCatgeoryRoute);
 app.use("/api/v1/brands", brandRoute);
 app.use("/api/v1/products", ProductRoute);
 app.use("/api/v1/users", UserRoute);
-app.use("/api/v1/", AuthRoute);
 
 // handle routes not found
 app.use("*", (req, res, next) => {
