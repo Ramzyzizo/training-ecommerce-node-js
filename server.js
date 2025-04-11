@@ -9,6 +9,8 @@ const subCatgeoryRoute = require("./routes/subCategoriesRoute");
 const brandRoute = require("./routes/brandsRoute");
 const ProductRoute = require("./routes/productsRoute");
 const UserRoute = require("./routes/userRoute");
+const uploadRoute = require("./routes/uploadRoute");
+
 const AuthRoute = require("./routes/authRoute");
 const ApiError = require("./utiles/ApiError");
 const globalError = require("./middlewares/errorMiddleware");
@@ -18,25 +20,16 @@ dbConnection();
 const app = express();
 // handle json body
 app.use(express.json());
-
-
-// Multer setup — use memory storage (or configure disk if needed)
-// Use multer globally for all multipart/form-data requests
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-app.use(upload.any());
-
 app.use(express.urlencoded({ extended: true }));
-
 
 // Mount routes
 app.use("/api/v1/", AuthRoute);
-app.use("/api/v1/*", requireAuth);
 app.use("/api/v1/categories", catgeoryRoute); 
 app.use("/api/v1/subCategories", subCatgeoryRoute);
 app.use("/api/v1/brands", brandRoute);
 app.use("/api/v1/products", ProductRoute);
 app.use("/api/v1/users", UserRoute);
+app.use("/api/v1/uploads", uploadRoute);
 
 // handle routes not found
 app.use("*", (req, res, next) => {
