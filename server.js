@@ -1,9 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const multer = require("multer");
+const Queue = require("bull");
 
 dotenv.config({ path: "config.env" });
-const dbConnection = require("./config/database");
+
 const catgeoryRoute = require("./routes/categoriesRoute");
 const subCatgeoryRoute = require("./routes/subCategoriesRoute");
 const brandRoute = require("./routes/brandsRoute");
@@ -13,8 +13,8 @@ const uploadRoute = require("./routes/uploadRoute");
 
 const AuthRoute = require("./routes/authRoute");
 const ApiError = require("./utiles/ApiError");
+const dbConnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
-const {requireAuth} = require("./middlewares/authMiddleware");
 
 dbConnection();
 const app = express();
@@ -39,9 +39,20 @@ app.use("*", (req, res, next) => {
 // handle global erros of express as json
 app.use(globalError);
 
+// craete queue using redid and bull library
+const myQueue = new Queue("myQueue");
+myQueue.process("myJob2", async (job) => {
+  console.log("Done ramzy222");
+});
+myQueue.process("myJob1", async (job) => {
+  console.log("Done ramzy111");
+});
+
 const {PORT} = process.env;
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`App is running envvv.${PORT} `);
+  await myQueue.add("myJob1", {}, { delay: 10000 });
+  await myQueue.add("myJob2", {}, { delay: 5000 });
 });
 
 // events to handle errors out of express
@@ -49,6 +60,6 @@ process.on("unhandledRejection", (err) => {
   console.error(`unhandled Error. ${err}`);
   server.close(()=>{
     console.log(`Shutting down....`);
-    process.exit(1);
+    process.exit(1); 
   });
 });
