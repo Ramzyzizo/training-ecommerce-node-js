@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "main": "index.js",
   "scripts": {
-    "build": "npm version patch",
+    "patch": "npm version patch",
     "dev": "nodemon server",
     "prod": "SET NODE_ENV=production & node server.js"
   },
