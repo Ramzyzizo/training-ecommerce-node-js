@@ -1,6 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const Queue = require("bull");
+// security
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 dotenv.config({ path: "config.env" });
 
@@ -22,8 +25,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// set security http headers
+app.use(helmet());
+// limit requests from same api
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: "Too many requests from this IP, please try again later",
+});
+
+app.use('/api/v1/auth', authLimiter);
 // Mount routes
-app.use("/api/v1/", AuthRoute);
+app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/categories", catgeoryRoute); 
 app.use("/api/v1/subCategories", subCatgeoryRoute);
 app.use("/api/v1/brands", brandRoute);
@@ -51,8 +64,8 @@ myQueue.process("myJob1", async (job) => {
 const {PORT} = process.env;
 const server = app.listen(PORT, async () => {
   console.log(`App is running envvv.${PORT} `);
-  await myQueue.add("myJob1", {}, { delay: 10000 });
-  await myQueue.add("myJob2", {}, { delay: 5000 });
+  // await myQueue.add("myJob1", {}, { delay: 10000 });
+  // await myQueue.add("myJob2", {}, { delay: 5000 });
 });
 
 // events to handle errors out of express
