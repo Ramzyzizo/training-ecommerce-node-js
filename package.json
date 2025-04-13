@@ -1,9 +1,9 @@
 {
   "name": "my_ecommerse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
-    "build":"npm version patch",
+    "build": "npm version patch",
     "dev": "nodemon server",
     "prod": "SET NODE_ENV=production & node server.js"
   },
